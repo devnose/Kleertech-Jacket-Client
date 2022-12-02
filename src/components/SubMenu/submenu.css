@@ -1,0 +1,18 @@
+
+    .conversations{
+        display: flex;
+        align-items: center;
+        padding: 3px;
+        margin-top: 5px;
+        margin-bottom: 10px;
+        pointer-events: none;
+
+    
+    }
+
+    .submenu {
+        font-size: 20px;
+        border-bottom: 1px solid gray;
+
+
+    }
