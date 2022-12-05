@@ -33,6 +33,7 @@
     <style>
       #notification {
         display: flex;
+        flex-direction: column;
         justify-content: center;
     position: fixed;
     bottom: 20px;
@@ -44,7 +45,7 @@
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   }
   .hidden {
-    display: none;
+    display: none !important;
   }
     </style>
   </head>
@@ -65,12 +66,12 @@
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
 
-    <div id="notification" class="hidden">
+    <div id="notification" class="hidden" >
       <p id="message"></p>
-      <button id="close-button" onClick="closeNotification()">
+      <button id="close-button"   onClick="closeNotification()">
         Close
       </button>
-      <button id="restart-button" onClick="restartApp()" class="hidden">
+      <button id="restart-button"class="hidden" onClick="restartApp()" >
         Restart
       </button>
     </div>
