@@ -1,0 +1,66 @@
+.message{
+    display: flex; 
+    flex-direction: column;
+    margin-top: 20px;
+}
+
+.messageTop{
+    display: flex;
+}
+
+.text_message{
+    display: flex;
+    flex-direction: column;
+
+}
+
+.messageImg{
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 10px;
+
+}
+
+#profileImageMessage {
+    font-family: Arial, Helvetica, sans-serif;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #333333;
+    font-size: 14px;
+    color: #fff;
+    text-align: center;
+    line-height: 1.4rem;
+    margin-right: 10px;
+}
+
+.messageText{
+    padding-left: 3px;
+    border-radius: 5px;
+    background-color: #333333;
+    color: white;
+    max-width: 300px;
+    padding: 10px
+
+}
+
+.messageBottom{
+    font-size: 10px ;
+    padding-left: 30px;
+}
+
+
+.message.own{
+    align-items:flex-end;
+}
+
+.message.own .messageText{
+    background-color: rgb(245, 241, 241);
+    color: black;
+    word-wrap: break-word;
+    padding: 10px
+}
+
+

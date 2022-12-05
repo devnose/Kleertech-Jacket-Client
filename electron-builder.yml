@@ -1,0 +1,10 @@
+appId: com.example.KleertechJackets
+productName: Kleertech Orders
+publish: {provider: github, releaseType: release,  private: false,  token: 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}
+
+nsis:
+  include: build/installer.nsh
+  perMachine: false
+  oneClick: false 
+
+

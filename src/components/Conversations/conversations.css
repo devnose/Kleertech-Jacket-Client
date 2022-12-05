@@ -1,0 +1,97 @@
+.conversation{
+    display: flex;
+    align-items: center;
+    padding: 3px;
+    padding-bottom: 10px;
+
+}
+
+.conversation:hover{
+    background-color: #3333333a;
+    border-radius: 5px;
+    width: 100%;
+}
+
+
+.conversationImg{
+    /* width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 10px;
+    border: 1px solid white; */
+    font-family: Arial, Helvetica, sans-serif;
+    width: 10rem;
+    height: 10rem;
+    border-radius: 50%;
+    background: #004D3C;
+    font-size: 3.5rem;
+    color: #fff;
+    text-align: center;
+    line-height: 10rem;
+    margin: 2rem 0;
+}
+
+#profileImage {
+    font-family: Arial, Helvetica, sans-serif;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #333333;
+    font-size: 25px;
+    color: #fff;
+    text-align: center;
+    line-height: 2.5rem;
+  }
+
+
+.conversationName{
+    font-weight: 500;
+    width: 100%;
+}
+
+.chatOnlineBadge{
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background-color: limegreen;
+    top: 1px;
+    right: 1px 
+
+}
+
+.unreadMessage {
+    display: block;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #3333333a ;
+    margin-left: auto;
+   margin-top: 15px;
+    font-size: 12px;
+    text-align: center;
+    
+
+    
+}
+
+.chatOnlineImgContainer{
+    position: relative;
+    margin-right: 10px;
+
+
+
+
+}
+
+.textContainer{
+    display: flex;
+    flex-direction: column;
+}
+
+.preview{
+    font-size: 11px;
+    font-weight: 100;
+    padding-right: 10px;
+}
