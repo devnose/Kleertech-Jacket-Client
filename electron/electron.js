@@ -3,15 +3,11 @@ const { app, BrowserWindow, protocol, ipcMain, ipcRenderer } = require("electron
 const Electrolytic = require('electrolytic');
 const fs = require('fs');
 const path = require("path");
-const url = require("url");
 const os = require('os');
 const { channels } = require("../src/shared/constants");
 const { exec } = require('child_process');
-const { dirname } = require("path");
 const isDev = require("electron-is-dev");
 const { Notification } = require("electron/main");
-const { Console } = require("console");
-const { getuid } = require("process");
 const { autoUpdater } = require('electron-updater');
 const axios = require('axios').default;
 
@@ -147,8 +143,8 @@ app.whenReady().then(() => {
 })
 
 
-// const username = os.userInfo().username; 
-const username = 'aaront'
+const username = os.userInfo().username; 
+// const username = 'Townsend'
 var userId; 
 console.log(username); 
 
@@ -467,7 +463,7 @@ ipcMain.on(channels.GET_JACKET, (event, arg) => {
 
     function installDependency() {
       if(process.platform === 'win32'){
-          exec(" cd C:\\Users\\aaront\\AppData\\Local\\Temp && SumatraPDF-3.4.6-64-install.exe -s "); 
+          exec(`" cd C:\\Users\\${username}\\AppData\\Local\\Temp && SumatraPDF-3.4.6-64-install.exe -s "`); 
           console.log('Sumatra PDF installed')
       }
     }

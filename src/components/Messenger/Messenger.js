@@ -8,9 +8,7 @@ import Message from "../Message/Message.js";
 import GroupMessage from "../GroupMessage/GroupMessage";
 import SubMenu from "../SubMenu/SubMenu";
 import axios from "axios";
-import userEvent from "@testing-library/user-event";
-import { Popup } from "devextreme-react";
-import { Alert } from "antd";
+
 import { channels } from "../../shared/constants";
 import { useRef } from "react";
 import {io} from "socket.io-client"
@@ -50,6 +48,7 @@ export default function Messenger() {
     })
 
   }, []); 
+
 
 
   useEffect(() => {
@@ -132,7 +131,7 @@ export default function Messenger() {
       }
       getUserId();
     });
-  }, []);
+  }, [id]);
 
 useEffect(() => {
 
@@ -232,6 +231,10 @@ const handleSubmit = async (e) => {
         console.log(err); 
     }
 }
+
+
+
+
 
 
 

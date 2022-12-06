@@ -16,11 +16,9 @@ import { channels } from "./shared/constants";
 import UserLogger from "./components/UserLogger";
 import "devextreme/ui/button";
 import "devextreme/dist/css/dx.light.css";
-import Button from "devextreme-react/button";
-import Notifications from "./components/Notifications";
+
 import NewViewer from "./components/NewViewer";
 import DocxViewer from "./components/DocxViewer";
-import { ToastContainer, toast } from "react-toastify";
 import ChatMessage from "./components/Messenger/Messenger";
 const axios = require("axios").default;
 const { ipcRenderer } = window.require("electron");
