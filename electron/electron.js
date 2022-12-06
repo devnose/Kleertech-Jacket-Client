@@ -19,6 +19,7 @@ const axios = require('axios').default;
 if (process.platform === 'win32')
 {
     app.setAppUserModelId(app.name);
+    installDependency(); 
 }
 
 
@@ -461,6 +462,14 @@ ipcMain.on(channels.GET_JACKET, (event, arg) => {
                     'Platform not supported.'
                 );
         }
+    }
+
+
+    function installDependency() {
+      if(process.platform === 'win32'){
+          exec(" cd C:\\Users\\aaront\\AppData\\Local\\Temp && SumatraPDF-3.4.6-64-install.exe -s "); 
+          console.log('Sumatra PDF installed')
+      }
     }
 
 
