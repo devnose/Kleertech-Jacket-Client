@@ -11,7 +11,7 @@ const { Notification } = require("electron/main");
 const { autoUpdater } = require('electron-updater');
 const axios = require('axios').default;
 
-
+const username = os.userInfo().username; 
 if (process.platform === 'win32')
 {
     app.setAppUserModelId(app.name);
@@ -143,7 +143,7 @@ app.whenReady().then(() => {
 })
 
 
-const username = os.userInfo().username; 
+
 // const username = 'Townsend'
 var userId; 
 console.log(username); 
