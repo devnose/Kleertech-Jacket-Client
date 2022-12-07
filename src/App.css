@@ -1,7 +1,7 @@
 
 .logger{
 overflow-y: scroll;
-max-height: 500px;
+height: 53vh;
 width: 100%;
 position: relative;
 
@@ -67,8 +67,14 @@ h2{
 
 .down{
   display: flex;
-  width: 100%;
+  width: 50%;
   height: 100%;
+  position: relative
+}
+
+.right{
+  height: 100%;
+  align-items: stretch;
 }
 
 

@@ -378,7 +378,9 @@ class App extends React.Component {
         <div className="down">
           {/* <UserLogger /> */}
           <UserLogger />
+          <div className="right">
           <ChatMessage/>
+          </div>
         </div>
 
       
