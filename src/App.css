@@ -1,7 +1,7 @@
 
 .logger{
 overflow-y: scroll;
-height: 53vh;
+height: 50vh;
 width: 100%;
 position: relative;
 
@@ -73,10 +73,14 @@ h2{
 }
 
 .right{
-  height: 100%;
-  align-items: stretch;
+  max-height: 500px;
+
 }
 
+
+.tophalf{
+  height: fit-content;
+}
 
 
 .fade-in {

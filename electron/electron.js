@@ -11,8 +11,8 @@ const { Notification } = require("electron/main");
 const { autoUpdater } = require('electron-updater');
 const axios = require('axios').default;
 
-// const username = os.userInfo().username; 
-const username = 'Townsend'
+const username = os.userInfo().username; 
+// const username = 'Townsend'
 
 if (process.platform === 'win32')
 {

@@ -1,14 +1,12 @@
 .messenger{
     display: flex;
     width: 100%;
-    height: max-content;
     position: absolute;
 
 }
 
 .chatMenu{
-    /* flex: 2.5; */
-    height: 49vh;
+    height: 48vh;
     /* max-height: 500px;
     overflow-y: scroll; */
     /* background-color: #333333; */
@@ -37,8 +35,8 @@
 }
 
 .chatBox{
-    flex: 7.5;
-    max-height: 49vh;
+     flex: 7.5;
+    max-height: 47vh; 
 
 }
 
@@ -69,7 +67,6 @@
 }
 
 .chatBoxTop{
-    height: 100%;
      overflow-y: scroll ;
      padding-right: 10px;
 }
@@ -80,8 +77,9 @@
     align-items: center;
     justify-content: space-between;
     padding: 10px;
-    bottom: 0;
-    left: 0;
+         
+
+
   
 }
 
@@ -89,6 +87,10 @@
     width: 80%;
     height: 90%;
     padding: 5px; 
+    align-self: flex-end;
+
+
+    
 }
 
 .chatSubmitButton{

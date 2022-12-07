@@ -281,6 +281,8 @@ class App extends React.Component {
     return (
       <div className="main">
 
+      <div className="tophalf">
+
         <FileManager
           ref={this.fileManagerRef}
           onCurrentDirectoryChanged={this.onCurrentDirectoryChanged}
@@ -371,6 +373,8 @@ class App extends React.Component {
           onCancel={() => this.setState({ setShowMsg: false, showMsg: false })}
           visible={this.state.showMsg}
         />
+
+</div>
 
 {/* <Button className="button">Clear Log</Button> */}
 
