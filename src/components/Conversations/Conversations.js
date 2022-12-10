@@ -22,7 +22,7 @@ export default function Conversations({conversations, currentUser, newMessage}) 
         try {
             const res = await axios("http://192.168.168.173:8090/api/messages/"+convoId); 
             console.log(res.data)
-            setMessage(res.data[res.data.length - 1].text); 
+            setMessage(res.data[res.data.length - 1]?.text); 
         } catch (err){
             console.log(err)
         }
@@ -30,6 +30,7 @@ export default function Conversations({conversations, currentUser, newMessage}) 
 
         const getUser = async ()=> {
             try {
+                console.log(friendId)
                 const res = await axios("http://192.168.168.173:8090/api/user?userId=" + friendId)
                 console.log(res.data.userId); 
                 setUser(res.data.userId)

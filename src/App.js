@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+import React, { useEffect,useRef } from "react";
+import LoadingBar from 'react-top-loading-bar'
 import RemoteFileSystemProvider from "devextreme/file_management/remote_provider";
 import "devextreme/dist/css/dx.common.css";
 import "devextreme/dist/css/dx.light.css";
@@ -11,6 +12,7 @@ import FileManager, {
   Column,
   Details,
   ContextMenu,
+  Notifications,
 } from "devextreme-react/file-manager";
 import { channels } from "./shared/constants";
 import UserLogger from "./components/UserLogger";
@@ -23,7 +25,7 @@ import ChatMessage from "./components/Messenger/Messenger";
 const axios = require("axios").default;
 const { ipcRenderer } = window.require("electron");
 const remoteFileProvider = new RemoteFileSystemProvider({
-  endpointUrl: "http://192.168.168.173:8090/start",
+  endpointUrl: "http://localhost:8090/start",
 });
 
 //global variables
@@ -36,9 +38,12 @@ ipcRenderer.on(channels.GET_USER, (event, arg) => {
   username = arg;
 });
 
+
+ipcRenderer.send(channels.UPLOAD_FILE, "hey");
+
 //Get docx data from backend
 function readDocsFromExpress(str) {
-  const promise = axios.get(`http://192.168.168.173:8090/docx/${str}`);
+  const promise = axios.get(`http://localhost:8090/docx/${str}`);
   const dataPromise = promise.then((response) => response.data);
   return dataPromise;
 }
@@ -67,6 +72,8 @@ class App extends React.Component {
       getHtml: "",
       setHtml: "",
       initialData: "",
+      progress: 0, 
+      setProgress: 0
     };
 
     this.fileManagerRef = React.createRef();
@@ -103,8 +110,8 @@ class App extends React.Component {
       var str = file.replace(/"/g, "");
       this.setState(
         {
-          setGetPdf: `http://192.168.168.173:8090/pdf/${str}`,
-          getPdf: `http://192.168.168.173:8090/pdf/${str}`,
+          setGetPdf: `http://localhost:8090/pdf/${str}`,
+          getPdf: `http://localhost:8090/pdf/${str}`,
         },
         () => {
           console.log(str);
@@ -130,10 +137,10 @@ class App extends React.Component {
   setAttachmentFile = (file) => {
     if (file.indexOf('"') >= 0) {
       var str = file.replace(/"/g, "");
-      // this.setState({ setGetAttatchment: `http://192.168.168.173:8090/attachment/${str}`, getAttatchment: `http://192.168.168.173:8090/attachment/${str}`}, () => {
+      // this.setState({ setGetAttatchment: `http://localhost:8090/attachment/${str}`, getAttatchment: `http://localhost:8090/attachment/${str}`}, () => {
       this.setState({
-        setGetMsg: `http://192.168.168.173:8090/msg/${str}`,
-        getMsg: `http://192.168.168.173:8090/msg/${str}`,
+        setGetMsg: `http://localhost:8090/msg/${str}`,
+        getMsg: `http://localhost:8090/msg/${str}`,
       });
       this.fileManager.refresh(3000);
       this.setState({ setShowMsg: true, showMsg: true });
@@ -147,7 +154,7 @@ class App extends React.Component {
     this.fileManager.refresh();
 
     //send path to backend
-    axios.post("http://192.168.168.173:8090/dir", e["file"]).then((res) => {
+    axios.post("http://localhost:8090/dir", e["file"]).then((res) => {
       console.log(res);
     });
 
@@ -177,7 +184,7 @@ class App extends React.Component {
       action: "Opened file" + filename,
     };
 
-    axios.post("http://192.168.168.173:8090/logData", data).then((res) => {
+    axios.post("http://localhost:8090/logData", data).then((res) => {
       console.log(res);
     });
     //send filename to backend for printing
@@ -187,26 +194,55 @@ class App extends React.Component {
 
   //file uploading [NON WORKING]
   onFileUploading = (e) => {
-    const dataForm = new FormData();
-    dataForm.append("filename", "test");
-    dataForm.append("uploadedFile", e.fileData);
-    console.log(e.fileData);
-    axios.post("http://192.168.168.173:8090/upload", dataForm).then((res) => {
-      console.log(res);
-    });
+    
+    ipcRenderer.send(channels.UPLOAD_FILE, e.fileData.path);
+    this.setState({ setProgress: 10, progress: 10});       
+      this.setState({ setProgress: 20, progress: 20});       
+      this.setState({ setProgress: 30, progress: 30});       
+        this.setState({ setProgress: 40, progress: 40});       
+      this.setState({ setProgress: 50, progress: 50});       
+      this.setState({ setProgress: 60, progress: 60});       
+      this.setState({ setProgress: 70, progress: 70});       
+      this.setState({ setProgress: 100, progress: 100});    
+        
+    this.fileManager.refresh(); 
+
+    // axios.post("http://localhost:8090/upload", file, {
+    //   headers: { 
+
+    //     'Content-Length': stat.size, 
+    //     'Content-Type': e.fileData.type, 
+    //     'Content-Disposition': `attachement; filename=${e.fileData.name}`
+
+    //   }
+    // }).then((res) => {
+    //   console.log(res);
+    // });
   };
 
+  onFileUploaded = (e) => {
+    console.log(e); 
+  }
+
   // file Deletion [NON WORKING]
+  onItemDeleting = (e) => {
+    console.log(e.item);
+    this.onItemDeleted(e)
+    
+  };
+
   onItemDeleted = (e) => {
     console.log(e.item);
-    const j = JSON.stringify(e.item);
-    fetch("http://192.168.168.173:8090/delete", {
-      method: "POST",
-      body: j,
-      headers: {
-        "Content-type": "application/json", // The type of data you're sending
-      },
-    });
+    this.setState({ setProgress: 10, progress: 10});       
+    this.setState({ setProgress: 20, progress: 20});       
+    this.setState({ setProgress: 30, progress: 30});       
+      this.setState({ setProgress: 40, progress: 40});       
+    this.setState({ setProgress: 50, progress: 50});       
+    this.setState({ setProgress: 60, progress: 60});       
+    this.setState({ setProgress: 70, progress: 70});       
+    this.setState({ setProgress: 100, progress: 100});    
+      
+  this.fileManager.refresh(); 
   };
 
   //Any items on the menu that has been clicked.
@@ -228,7 +264,7 @@ class App extends React.Component {
   //             "Order Confirmation Sent for job# " +
   //             path["currentSelectedItemKeys"],
   //         };
-  //         axios.post("http://192.168.168.173:8090/confirm", data).then((res) => {
+  //         axios.post("http://localhost:8090/confirm", data).then((res) => {
   //           if (res.data) {
   //             alert("Order Has been confirmed by someone else");
   //           } else {
@@ -243,7 +279,7 @@ class App extends React.Component {
   //             "Order Confirmation Sent for job# " +
   //             path["selectedItems"][0]["pathKeys"][2],
   //         };
-  //         axios.post("http://192.168.168.173:8090/confirm", data).then((res) => {
+  //         axios.post("http://localhost:8090/confirm", data).then((res) => {
   //           if (res.data) {
   //             alert("Order Has been confirmed by someone else");
   //           } else {
@@ -257,7 +293,7 @@ class App extends React.Component {
   //         }, 2000);
   //       }
 
-  //       //axios.post('http://192.168.168.173:8090/confirm', data).then(res => { console.log(res) })
+  //       //axios.post('http://localhost:8090/confirm', data).then(res => { console.log(res) })
   //     } else {
   //       alert("Cannot Send Confirmation from this directory");
   //     }
@@ -277,13 +313,19 @@ class App extends React.Component {
   //   this.fileManager.refresh()
   // }
 
+
+
+
   render() {
     return (
       <div className="main">
 
+        <LoadingBar color="#50C878	" height={5} progress={this.state.progress} shadow={true} onLoaderFinished={() => this.setState({setProgress: 0, progress: 0})} loaderSpeed={2000} waitingTime={2000}/>
+
       <div className="tophalf">
 
         <FileManager
+        height={'50vh'}
           ref={this.fileManagerRef}
           onCurrentDirectoryChanged={this.onCurrentDirectoryChanged}
           fileSystemProvider={remoteFileProvider}
@@ -291,10 +333,15 @@ class App extends React.Component {
           //onToolbarItemClick={this.onContextMenuItemClick}
           onContextMenuItemClick={this.onItemClick}
           onFileUploading={this.onFileUploading}
+          onFileUploaded={this.onFileUploaded}
           onInitialized={this.onInitialized}
           onItemDeleted={this.onItemDeleted}
+          onItemDeleting={this.onItemDeleting}
           onSelectionChanged={this.onSelect}
+          
         >
+
+
           <Permissions
             create={true}
             copy={true}
@@ -304,6 +351,12 @@ class App extends React.Component {
             upload={true}
             download={true}
           ></Permissions>
+
+          <Notifications
+          showPanel={false}
+          showPopup={false}
+          />
+          
           <ItemView showParentFolder={false}>
             <Details>
               <Column dataField="thumbnail"></Column>
@@ -315,7 +368,7 @@ class App extends React.Component {
             </Details>
           </ItemView>
           <Toolbar>
-            
+
   
             <FileSelectionItem
               widget="dxMenu"
@@ -328,6 +381,7 @@ class App extends React.Component {
               widget="dxMenu"
               location="before"
               options={this.jobjacketMenuOption}
+              
             />
             <FileSelectionItem name="refresh" />
             <FileSelectionItem name="clearSelection" />
@@ -396,6 +450,8 @@ class App extends React.Component {
     return this.fileManagerRef.current.instance;
   }
 
+  
+
   onItemClick({ itemData, viewArea, fileSystemItem }) {
     console.log(itemData.text);
 
@@ -412,7 +468,7 @@ class App extends React.Component {
           tenary,
       };
 
-      axios.post("http://192.168.168.173:8090/confirm", data).then((res) => {
+      axios.post("http://localhost:8090/confirm", data).then((res) => {
         if (res.data) {
           alert("Order Has been confirmed by someone else");
         } else {
@@ -431,38 +487,58 @@ class App extends React.Component {
     if (itemData.text === "Print Job Jacket") {
       var directory = this.fileManager.getCurrentDirectory()
       var tenary = path["selectedItems"].length == 0 ? directory.path : path["selectedItems"][0].path; 
+
+      const printData = {
+          directory: tenary,
+          username: username
+      }
     
      
-      ipcRenderer.send(channels.GET_JACKET, "start");
-      var args;
-      ipcRenderer.on(channels.GET_JACKET, (event, arg) => {
-        args = arg;
-        console.log(args)
-      });
-
+      ipcRenderer.send(channels.GET_JACKET, printData);
+      this.setState({ setProgress: 10, progress: 10});       
+      this.setState({ setProgress: 20, progress: 20});       
+      this.setState({ setProgress: 30, progress: 30});       
       setTimeout(() => {
-        alert(
-          "WARNING: Your printing multiple documents to create a job jacket"
-        );
-        console.log(args);
-        const data = { dir: args, directory: tenary, username: username, };
-        axios.post("http://192.168.168.173:8090/readPrintDir", data).then((res) => {
-          console.log(res.data);
+        this.setState({ setProgress: 40, progress: 40});       
+      this.setState({ setProgress: 50, progress: 50});       
+      this.setState({ setProgress: 60, progress: 60});       
+      this.setState({ setProgress: 70, progress: 70});       
+      this.setState({ setProgress: 100, progress: 100});    
+        
+      }, 3000);
+         
 
-          if (res.data.success) {
-            ipcRenderer.send(channels.GET_JACKET, res.data);
 
-            const data = {
-              username: username,
-              action: "Printed Job Jacket: #20222152 ",
-            };
-            axios.post("http://192.168.168.173:8090/logData", data).then((res) => {
-              console.log(res);
-            });
-          }
-        });
-      }, 5000);
-    }
-  }
+      // ipcRenderer.on(channels.GET_JACKET, (event, arg) => {
+      //   args = arg;
+      //   console.log(args); 
+      // });
+
+  //     setTimeout(() => {
+  //       alert(
+  //         "WARNING: Your printing multiple documents to create a job jacket"
+  //       );
+  //       console.log(args);
+  //       const data = { dir: args, directory: tenary, username: username, };
+  //       axios.post("http://localhost:8090/readPrintDir", data).then((res) => {
+  //         console.log(res.data);
+
+  //         if (res.data.success) {
+  //           ipcRenderer.send(channels.GET_JACKET, res.data);
+
+  //           const data = {
+  //             username: username,
+  //             action: "Printed Job Jacket: #20222152 ",
+  //           };
+  //           axios.post("http://localhost:8090/logData", data).then((res) => {
+  //             console.log(res);
+  //           });
+  //         }
+  //       });
+  //     }, 5000);
+     }
+   }
+
+
 }
 export default App;

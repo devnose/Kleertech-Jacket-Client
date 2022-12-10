@@ -6,6 +6,7 @@ module.exports = {
         GET_DIRECT: 'get_direct',
         GET_PRINTSTATUS: 'get_printstatus',
         GET_JACKET: 'get_jacket',
-        SEND_USERID: 'send_userid'
+        SEND_USERID: 'send_userid', 
+        UPLOAD_FILE: 'upload_file'
     }
 }
