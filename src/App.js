@@ -19,9 +19,12 @@ import UserLogger from "./components/UserLogger";
 import "devextreme/ui/button";
 import "devextreme/dist/css/dx.light.css";
 
+import useWindowSize from "./Utilities/useWindowSize";
+
 import NewViewer from "./components/NewViewer";
 import DocxViewer from "./components/DocxViewer";
 import ChatMessage from "./components/Messenger/Messenger";
+   
 const axios = require("axios").default;
 const { ipcRenderer } = window.require("electron");
 const remoteFileProvider = new RemoteFileSystemProvider({
@@ -31,6 +34,8 @@ const remoteFileProvider = new RemoteFileSystemProvider({
 //global variables
 var username;
 var path;
+const isDesktopResolution = window.screen.height < 600
+
 
 //recieving username from backend electron
 ipcRenderer.send(channels.GET_USER, "love");
@@ -47,6 +52,8 @@ function readDocsFromExpress(str) {
   const dataPromise = promise.then((response) => response.data);
   return dataPromise;
 }
+
+
 
 //class file compoenent
 class App extends React.Component {
@@ -73,7 +80,10 @@ class App extends React.Component {
       setHtml: "",
       initialData: "",
       progress: 0, 
-      setProgress: 0
+      setProgress: 0,
+      setDiv: false, 
+      div: false
+     
     };
 
     this.fileManagerRef = React.createRef();
@@ -309,14 +319,27 @@ class App extends React.Component {
     path = e;
   };
 
+
+divShowHide = (e) => {
+  this.setState({ setDiv: !this.state.div }); 
+
+  }
+
   // onCurrentDirectoryChanged = (e) => {
   //   this.fileManager.refresh()
   // }
 
 
+ 
 
 
   render() {
+
+    if(window.matchMedia("max-height: 600px").matches){
+      this.setState({ setDiv: !this.state.div}); 
+    }
+  
+
     return (
       <div className="main">
 
@@ -433,7 +456,8 @@ class App extends React.Component {
 {/* <Button className="button">Clear Log</Button> */}
 
 
-        <div className="down">
+
+        <div id="content" className="down">
           {/* <UserLogger /> */}
           <UserLogger />
           <div className="right">
