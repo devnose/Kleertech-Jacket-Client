@@ -29,7 +29,7 @@ const Notifications = ({doc, onCancel, visible, msg}) => {
         const check = async () => {
             console.log('checking')
             try {
-                const response = await axios.get('http://localhost:8090/notify');
+                const response = await axios.get('http://192.168.168.173:8090/notify');
                 console.log(response); 
                 const mine = response.data;
                 console.log(mine)

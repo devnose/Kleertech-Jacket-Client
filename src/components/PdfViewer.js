@@ -83,7 +83,7 @@ const PdfViewer = ({pdf, onCancel, visible, username, isLoading})=> {
             username: username,
             action: 'Printed Document: ' + pdf
           }
-        axios.post('http://localhost:8090/logData', data).then(res => { console.log(res) })
+        axios.post('http://192.168.168.173:8090/logData', data).then(res => { console.log(res) })
       }
       
 

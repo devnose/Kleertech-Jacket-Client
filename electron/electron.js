@@ -33,7 +33,7 @@ const electrolytic = Electrolytic({
 }); 
 
 const id = async () => {
-  const res =  await axios.get('http://localhost:8090/api/user/'+username); 
+  const res =  await axios.get('http://192.168.168.173:8090/api/user/'+username); 
   console.log('restest: '+res.data[0]._id);
   return Promise.resolve(res.data[0]._id)
 
@@ -46,9 +46,9 @@ electrolytic.on('token', token => {
   
   
     console.log(token); 
-    axios.post('http://localhost:8090/token', {token: token}).then(res => {console.log(res.data)}).catch(function (error) {console.log(error)}); 
+    axios.post('http://192.168.168.173:8090/token', {token: token}).then(res => {console.log(res.data)}).catch(function (error) {console.log(error)}); 
     (async () => {
-          axios.post('http://localhost:8090/api/user/token',{userId: username, tokenId: token, _id: await id()}).then(res => {console.log(res.data)}).catch(function (error) {console.log(error)}); 
+          axios.post('http://192.168.168.173:8090/api/user/token',{userId: username, tokenId: token, _id: await id()}).then(res => {console.log(res.data)}).catch(function (error) {console.log(error)}); 
 
     })()
 })
@@ -95,11 +95,11 @@ function createWindow() {
 
   // In production, set the initial browser path to the local bundle generated
   // by the Create React App build process.
-  // In development, set it to localhost to allow live/hot-reloading.
+  // In development, set it to 192.168.168.173 to allow live/hot-reloading.
 
   mainWindow.loadURL(
     isDev 
-      ? "http://localhost:3000"
+      ? "http://192.168.168.173:3000"
       : `file://${path.join(__dirname, "../index.html")}`
   );
   // Automatically open Chrome's DevTools in development mode.
