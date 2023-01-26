@@ -95,12 +95,9 @@ export default function Conversations({conversations, currentUser, newMessage}) 
         }
         getLastMessage()
         getUser()
-        checkNewMessage()
 
-        setInterval(() => {
             checkNewMessage()
 
-        }, 10000);
       
         
     }, [currentUser, conversations]); 

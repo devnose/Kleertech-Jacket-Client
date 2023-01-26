@@ -78,6 +78,7 @@ export default function Messenger() {
         try{
             const res = await axios.get("http://192.168.168.173:8090/api/user/usersList/");
             console.log(res.data) 
+            
             setAllUsers(res.data); 
         } catch (err) {
             console.log(err); 

@@ -12,8 +12,10 @@ const { title } = require("process");
 const { Notification } = require("electron/main");
 
 const defaultPrinter = {
-  printer: "none"
+  printer: ""
 }
+
+console.log('fuckfuckfuck')
 
 
 Object.defineProperty(defaultPrinter, "getPrinter", {
@@ -58,7 +60,7 @@ const makeTemp = async () => {
 const readPrintDir = async (tempDir,tenary,username) => {
 
     const data = { dir: tempDir, directory: tenary, username: username, };
-    axios.post("http://192.168.168.173:8090/readPrintDir", data).then((res) => {
+    axios.post("http://localhost:8090/readPrintDir", data).then((res) => {
       if (res.data.success) {
              const files = res.data.files; 
              var counter = 0; 
@@ -72,7 +74,7 @@ const readPrintDir = async (tempDir,tenary,username) => {
           username: username,
           action: `Printed Job Jacket: ${tenary}`,
         };
-        axios.post("http://192.168.168.173:8090/logData", data).then((res) => {
+        axios.post("http://localhost:8090/logData", data).then((res) => {
         //   console.log(res);
         });
       }
@@ -88,7 +90,7 @@ const getConvertedPrintFiles = async (fileName, tempDir, howManyFiles, tenary) =
 
     const receiveFile = await axios.request({
         method: 'GET',
-        url: `http://192.168.168.173:8090/sendPdfs/${fileName}`,
+        url: `http://localhost:8090/sendPdfs/${fileName}`,
         responseType: 'arraybuffer',
         responseEncoding: 'binary'
 
@@ -160,7 +162,7 @@ const setPrinter = (userPrinter) => {
 }
 
 const showPrintNotification = async (tenary) => {
- axios.post('http://192.168.168.173:8090/notify', {payload: `Printing ${tenary}`}).then(res => {console.log(res.data)}); 
+ axios.post('http://localhost:8090/notify', {payload: `Printing ${tenary}`}).then(res => {console.log(res.data)}); 
 
 }
 

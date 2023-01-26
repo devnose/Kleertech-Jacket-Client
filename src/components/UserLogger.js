@@ -28,7 +28,7 @@ export default class UserLogger extends React.Component {
 
     async fetch() {
         var context = this;
-        const res = await fetch('http://192.168.168.173:8090/log'); 
+        const res = await fetch('http://localhost:8090/log'); 
         const data = await res.json(); 
     //    / console.log(data[0].Username)
           context.setState({logger: data.reverse()})

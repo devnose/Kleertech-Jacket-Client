@@ -28,7 +28,7 @@ import ChatMessage from "./components/Messenger/Messenger";
 const axios = require("axios").default;
 const { ipcRenderer } = window.require("electron");
 const remoteFileProvider = new RemoteFileSystemProvider({
-  endpointUrl: "http://192.168.168.173:8090/start",
+  endpointUrl: "http://localhost:8090/start",
 });
 
 //global variables
@@ -48,7 +48,7 @@ ipcRenderer.send(channels.UPLOAD_FILE, "hey");
 
 //Get docx data from backend
 function readDocsFromExpress(str) {
-  const promise = axios.get(`http://192.168.168.173:8090/docx/${str}`);
+  const promise = axios.get(`http://localhost:8090/docx/${str}`);
   const dataPromise = promise.then((response) => response.data);
   return dataPromise;
 }
@@ -120,8 +120,8 @@ class App extends React.Component {
       var str = file.replace(/"/g, "");
       this.setState(
         {
-          setGetPdf: `http://192.168.168.173:8090/pdf/${str}`,
-          getPdf: `http://192.168.168.173:8090/pdf/${str}`,
+          setGetPdf: `http://localhost:8090/pdf/${str}`,
+          getPdf: `http://localhost:8090/pdf/${str}`,
         },
         () => {
           console.log(str);
@@ -147,10 +147,10 @@ class App extends React.Component {
   setAttachmentFile = (file) => {
     if (file.indexOf('"') >= 0) {
       var str = file.replace(/"/g, "");
-      // this.setState({ setGetAttatchment: `http://192.168.168.173:8090/attachment/${str}`, getAttatchment: `http://192.168.168.173:8090/attachment/${str}`}, () => {
+      // this.setState({ setGetAttatchment: `http://localhost:8090/attachment/${str}`, getAttatchment: `http://localhost:8090/attachment/${str}`}, () => {
       this.setState({
-        setGetMsg: `http://192.168.168.173:8090/msg/${str}`,
-        getMsg: `http://192.168.168.173:8090/msg/${str}`,
+        setGetMsg: `http://localhost:8090/msg/${str}`,
+        getMsg: `http://localhost:8090/msg/${str}`,
       });
       this.fileManager.refresh(3000);
       this.setState({ setShowMsg: true, showMsg: true });
@@ -164,7 +164,7 @@ class App extends React.Component {
     this.fileManager.refresh();
 
     //send path to backend
-    axios.post("http://192.168.168.173:8090/dir", e["file"]).then((res) => {
+    axios.post("http://localhost:8090/dir", e["file"]).then((res) => {
       console.log(res);
     });
 
@@ -194,7 +194,7 @@ class App extends React.Component {
       action: "Opened file" + filename,
     };
 
-    axios.post("http://192.168.168.173:8090/logData", data).then((res) => {
+    axios.post("http://localhost:8090/logData", data).then((res) => {
       console.log(res);
     });
     //send filename to backend for printing
@@ -217,7 +217,7 @@ class App extends React.Component {
         
     this.fileManager.refresh(); 
 
-    // axios.post("http://192.168.168.173:8090/upload", file, {
+    // axios.post("http://localhost:8090/upload", file, {
     //   headers: { 
 
     //     'Content-Length': stat.size, 
@@ -237,6 +237,7 @@ class App extends React.Component {
   // file Deletion [NON WORKING]
   onItemDeleting = (e) => {
     console.log(e.item);
+    console.log(e)
     this.onItemDeleted(e)
     
   };
@@ -254,6 +255,29 @@ class App extends React.Component {
       
   this.fileManager.refresh(); 
   };
+
+
+  directoryCreated = (e) => {
+    const name = e.name ; 
+    const dir = 'P://'+e.parentDirectory.path; 
+    const data = {name: name, directory: dir}
+    
+    axios.post("http://localhost:8090/create", data).then((res) => {
+      console.log(res);
+
+      if(res.status == 200){
+
+        this.fileManager.refresh(); 
+      }
+    });
+
+    //send to backend for creting directory. 
+    // have name of directory
+    // have the directory path 
+
+
+
+  }
 
   //Any items on the menu that has been clicked.
   // onContextMenuItemClick = (e) => {
@@ -274,7 +298,7 @@ class App extends React.Component {
   //             "Order Confirmation Sent for job# " +
   //             path["currentSelectedItemKeys"],
   //         };
-  //         axios.post("http://192.168.168.173:8090/confirm", data).then((res) => {
+  //         axios.post("http://localhost:8090/confirm", data).then((res) => {
   //           if (res.data) {
   //             alert("Order Has been confirmed by someone else");
   //           } else {
@@ -289,7 +313,7 @@ class App extends React.Component {
   //             "Order Confirmation Sent for job# " +
   //             path["selectedItems"][0]["pathKeys"][2],
   //         };
-  //         axios.post("http://192.168.168.173:8090/confirm", data).then((res) => {
+  //         axios.post("http://localhost:8090/confirm", data).then((res) => {
   //           if (res.data) {
   //             alert("Order Has been confirmed by someone else");
   //           } else {
@@ -303,7 +327,7 @@ class App extends React.Component {
   //         }, 2000);
   //       }
 
-  //       //axios.post('http://192.168.168.173:8090/confirm', data).then(res => { console.log(res) })
+  //       //axios.post('http://localhost:8090/confirm', data).then(res => { console.log(res) })
   //     } else {
   //       alert("Cannot Send Confirmation from this directory");
   //     }
@@ -330,7 +354,12 @@ divShowHide = (e) => {
   // }
 
 
- 
+   id = async () => {
+    const res =  await axios.get('http://localhost:8090/api/user/'+username); 
+    console.log('restest: '+res.data[0].tokenId);
+    return Promise.resolve(res.data[0].tokenId)
+  
+  }
 
 
   render() {
@@ -361,6 +390,8 @@ divShowHide = (e) => {
           onItemDeleted={this.onItemDeleted}
           onItemDeleting={this.onItemDeleting}
           onSelectionChanged={this.onSelect}
+          onDirectoryCreating={this.directoryCreated}
+          
           
         >
 
@@ -380,10 +411,11 @@ divShowHide = (e) => {
           showPopup={false}
           />
           
+          =
           <ItemView showParentFolder={false}>
             <Details>
               <Column dataField="thumbnail"></Column>
-              <Column dataField="name"></Column>
+              <Column dataField="name" width="800"> </Column>
               <Column dataField="confirm" caption="Order Confirmed" width="180"></Column>
               <Column dataField="created" caption="Job Jacket Created " width="130"></Column>
               <Column dataField="rushed" caption="Rushed Order" width="120"></Column>
@@ -476,6 +508,8 @@ divShowHide = (e) => {
 
   
 
+  
+
   onItemClick({ itemData, viewArea, fileSystemItem }) {
     console.log(itemData.text);
 
@@ -492,7 +526,7 @@ divShowHide = (e) => {
           tenary,
       };
 
-      axios.post("http://192.168.168.173:8090/confirm", data).then((res) => {
+      axios.post("http://localhost:8090/confirm", data).then((res) => {
         if (res.data) {
           alert("Order Has been confirmed by someone else");
         } else {
@@ -527,9 +561,25 @@ divShowHide = (e) => {
       this.setState({ setProgress: 50, progress: 50});       
       this.setState({ setProgress: 60, progress: 60});       
       this.setState({ setProgress: 70, progress: 70});       
-      this.setState({ setProgress: 100, progress: 100});    
+      this.setState({ setProgress: 100, progress: 100});  
+
+   
+      
+     
+
+      (async () => {
+        const _id = await this.id(); 
+        const data = {tokenId: _id, payload: `Job Jacket ${tenary} printing`}
+        axios.post("http://localhost:8090/notify", data).then((res) => {
+          console.log(res.data); 
+        })
+
+
+      })()
         
       }, 3000);
+
+
          
 
 
@@ -544,7 +594,7 @@ divShowHide = (e) => {
   //       );
   //       console.log(args);
   //       const data = { dir: args, directory: tenary, username: username, };
-  //       axios.post("http://192.168.168.173:8090/readPrintDir", data).then((res) => {
+  //       axios.post("http://localhost:8090/readPrintDir", data).then((res) => {
   //         console.log(res.data);
 
   //         if (res.data.success) {
@@ -554,7 +604,7 @@ divShowHide = (e) => {
   //             username: username,
   //             action: "Printed Job Jacket: #20222152 ",
   //           };
-  //           axios.post("http://192.168.168.173:8090/logData", data).then((res) => {
+  //           axios.post("http://localhost:8090/logData", data).then((res) => {
   //             console.log(res);
   //           });
   //         }

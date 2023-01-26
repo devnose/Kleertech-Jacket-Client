@@ -2,17 +2,18 @@ const { app, BrowserWindow, protocol, ipcMain, ipcRenderer } = require("electron
 const axios = require('axios').default;
 const { channels } = require("../src/shared/constants");
 const os = require('os');
+const { TokenRounded } = require("@mui/icons-material");
 
 let userId; 
 const addUser = async () => {
-   const username = os.userInfo().username.toString()
-// const username = "Townsend"
+  //  const username = os.userInfo().username.toString()
+const username = "Townsend"
   axios
-    .get("http://192.168.168.173:8090/api/user/" +  username)
+    .get("http://localhost:8090/api/user/" +  username)
     .then((res) => {
       if (res.data.length === 0) {
         axios
-          .post("http://192.168.168.173:8090/api/user/add", {
+          .post("http://localhost:8090/api/user/add", {
             userId: username,
             email: "kleertech@kleertech.com",
           })
@@ -35,10 +36,10 @@ const addUser = async () => {
 const addConversations = async (userid) => {
   try {
     const res = await axios.get(
-      "http://192.168.168.173:8090/api/user/usersList/"
+      "http://localhost:8090/api/user/usersList/"
     );
     const data = res.data;
-
+// 
     const keys = Object.keys(data);
     console.log(keys);
 
@@ -63,7 +64,7 @@ addUser();
 async function addChannels(id) {
   try {
     const res = await axios.post(
-      "http://192.168.168.173:8090/api/channel/add/" + id
+      "http://localhost:8090/api/channel/add/" + id
     );
     console.log(res.data);
   } catch (err) {
@@ -74,7 +75,7 @@ async function addChannels(id) {
 async function haveConversation(data) {
   try {
     const res = await axios.post(
-      "http://192.168.168.173:8090/api/conversations/api",
+      "http://localhost:8090/api/conversations/api",
       data
     );
     console.log(res);

@@ -1,10 +1,10 @@
-@media only screen and (min-height: 0px) and (max-height: 700px){
+@media only screen and (min-height: 0px) and (max-height: 750px){
   #content {
       visibility: hidden;
   }
-}
+} 
 
-@media screen and (min-height: 701px) and (max-height: 1024px) {
+ @media screen and (min-height: 701px) and (max-height: 1024px) {
   #content { display: flex; }   /* hide it elsewhere */
 }
 
