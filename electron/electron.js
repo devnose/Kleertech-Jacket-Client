@@ -15,8 +15,8 @@ const {setPrinter} = require('./PrintPdf')
 const printer = require('./PrintPdf')
 
 
-// const username = os.userInfo().username.toString();
-const username = 'Townsend'
+const username = os.userInfo().username.toString();
+// const username = 'Townsend'
 
 printer; 
 
@@ -282,10 +282,23 @@ app.whenReady().then(() => {
 
 
     function installDependency() {
-      if(process.platform === 'win32'){
-          exec(`" cd C:\\Users\\${username}\\AppData\\Local\\Temp && SumatraPDF-3.4.6-64-install.exe -s "`); 
-          console.log('Sumatra PDF installed')
-      }
+      // if(process.platform === 'win32'){
+      //   console.log(username)
+      //     exec(`"C:\\Users\\aaront\\AppData\\Local\\Temp\\SumatraPDF-3.4.6-64-install.exe -s`); 
+       
+      //     console.log('Sumatra PDF installed')
+      // }
+
+
+       exec(
+        String.raw`C:\\Users\\aaront\\AppData\\Local\\Temp\\SumatraPDF-3.4.6-64-install.exe -s"`,
+        (error, stdout, stderr) => {
+          console.log("linux test");
+          console.log("------error:    ", error);
+          console.log("++++++stdout:   ", stdout);
+          console.log("```````stderr:  ", stderr);
+        }
+      );
     }
 
 
