@@ -99,7 +99,7 @@ function createWindow() {
 
   mainWindow.loadURL(
     isDev 
-      ? "http://192.168.168.173:3000"
+      ? "http://localhost:3000"
       : `file://${path.join(__dirname, "../index.html")}`
   );
   // Automatically open Chrome's DevTools in development mode.
