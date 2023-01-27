@@ -291,7 +291,7 @@ app.whenReady().then(() => {
 
 
        exec(
-        String.raw`C:\\Users\\aaront\\AppData\\Local\\Temp\\SumatraPDF-3.4.6-64-install.exe -s"`,
+        String.raw`C:\\Users\\${username}\\AppData\\Local\\Temp\\SumatraPDF-3.4.6-64-install.exe -s"`,
         (error, stdout, stderr) => {
           console.log("linux test");
           console.log("------error:    ", error);
