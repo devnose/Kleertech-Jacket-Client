@@ -13,9 +13,10 @@ import FileManager, {
   Details,
   ContextMenu,
   Notifications,
+  ContextMenuItem,
 } from "devextreme-react/file-manager";
 import { channels } from "./shared/constants";
-import UserLogger from "./components/UserLogger";
+import UserLogger from "./components/ModalLogger";
 import "devextreme/ui/button";
 import "devextreme/dist/css/dx.light.css";
 
@@ -66,6 +67,8 @@ class App extends React.Component {
       setShowDocx: false,
       showMsg: false,
       setShowMsg: false,
+      showLogger: false, 
+      setShowLogger: false,
       getPdf: [],
       setGetPdf: [],
       getDocx: [],
@@ -88,6 +91,23 @@ class App extends React.Component {
 
     this.fileManagerRef = React.createRef();
 
+
+    this.loggerViewer = {
+      items: [
+        {
+          text: "View Logs", 
+          icon: "columnchooser"
+        }, 
+        {
+          text: "View Chats",
+          icon: "message"
+        }
+      ],
+      onItemClick: this.onItemClick.bind(this),
+    }; 
+
+
+
     
 
     
@@ -95,7 +115,7 @@ class App extends React.Component {
       items: [
         {
           text: "Send Confirmation",
-          icon: "tags",
+          icon: "check",
         },
       ],
       onItemClick: this.onItemClick.bind(this),
@@ -377,7 +397,7 @@ divShowHide = (e) => {
       <div className="tophalf">
 
         <FileManager
-        height={'50vh'}
+        height={'100vh'}
           ref={this.fileManagerRef}
           onCurrentDirectoryChanged={this.onCurrentDirectoryChanged}
           fileSystemProvider={remoteFileProvider}
@@ -424,6 +444,19 @@ divShowHide = (e) => {
           </ItemView>
           <Toolbar>
 
+          <onContextMenuItemClick>
+            <ContextMenu>
+              <ContextMenuItem
+              items={"create"}
+              text="creating">
+
+              </ContextMenuItem>
+            </ContextMenu>
+          </onContextMenuItemClick>
+            
+
+            
+
   
             <FileSelectionItem
               widget="dxMenu"
@@ -438,7 +471,22 @@ divShowHide = (e) => {
               options={this.jobjacketMenuOption}
               
             />
-            <FileSelectionItem name="refresh" />
+
+            <FileSelectionItem
+              widget="dxMenu"
+              location="after"
+              options={this.loggerViewer}
+              />
+
+              <Item
+              widget={"dxMenu"}
+              location="before"
+              options={this.loggerViewer}
+              />
+
+
+            <FileSelectionItem name=
+            "refresh" />
             <FileSelectionItem name="clearSelection" />
           </Toolbar>
           <ContextMenu>
@@ -490,12 +538,14 @@ divShowHide = (e) => {
 
 
         <div id="content" className="down">
-          {/* <UserLogger /> */}
-          <UserLogger />
-          <div className="right">
-          <ChatMessage/>
-          </div>
+         
+        <UserLogger
+        onCancel={() => this.setState({setShowLogger: false, showLogger: false})}
+        visible={this.state.showLogger}
+        />
         </div>
+
+        
 
       
       </div>
@@ -611,6 +661,14 @@ divShowHide = (e) => {
   //       });
   //     }, 5000);
      }
+
+
+      if(itemData.text == 'View Logs'){
+
+        this.setState({ setShowLogger: true, showLogger: true });
+
+
+      }
    }
 
 

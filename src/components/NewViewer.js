@@ -59,9 +59,7 @@ const NewViewer = ({pdf, onCancel, visible}) => {
     <Button onClick={()=>onPage(0)}>Previous</Button>
     <div>
     <span style={{textAlign: 'center'}}>Page {page} of {numPages}</span>
-        <ZoomOutOutlined style={{...zoomStyle, opacity: scale === 0.1 ? 0.5 : 1}} onClick={()=>onSetScale(0)}/>
-        <ZoomInOutlined style={{...zoomStyle, opacity: scale === 2 ? 0.5 : 1}} onClick={()=>onSetScale(1)}/>
-        <span>{Math.round(scale * 100)}%</span>
+      
      </div>
     <Button onClick={()=>onPage(1)}>Next</Button>
     <div className="print">
@@ -75,18 +73,17 @@ const NewViewer = ({pdf, onCancel, visible}) => {
     return (
         <Modal maskClosable={false}
                    onCancel={onCancel}
-                   visible={visible}
+                   open={visible}
                    width={"70%"}
                    bodyStyle={{height: 800, overflowY: 'auto'}}
                    style={{ top: 20 }}
                    footer={footer}>
-            <Document
+            <Document className={'pdfCenter'}
                 file={pdf}
                 onLoadSuccess={onDocumentLoadSuccess}>
                     <Page pageNumber={page}
                         
-                        scale={scale} />
-                    <p>Page {pageNumber} of {numPages}</p>
+                        scale={1.3} />
 
             </Document>
             </Modal>
