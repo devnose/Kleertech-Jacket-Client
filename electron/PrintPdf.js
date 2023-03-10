@@ -68,7 +68,7 @@ const readPrintDir = async (tempDir,tenary,username) => {
   console.log(username)
 
     const data = { dir: tempDir, directory: tenary, username: username, };
-    axios.post("http://192.168.168.173/readPrintDir", data).then((res) => {
+    axios.post("http://192.168.168.173:8090/readPrintDir", data).then((res) => {
       if (res.data.success) {
              const files = res.data.files; 
              var counter = 0; 
@@ -82,7 +82,7 @@ const readPrintDir = async (tempDir,tenary,username) => {
           username: username,
           action: `Printed Job Jacket: ${tenary}`,
         };
-        axios.post("http://192.168.168.173/logData", data).then((res) => {
+        axios.post("http://192.168.168.173:8090/logData", data).then((res) => {
         //   console.log(res);
         });
       }
@@ -98,7 +98,7 @@ const getConvertedPrintFiles = async (fileName, tempDir, howManyFiles, tenary) =
 
     const receiveFile = await axios.request({
         method: 'GET',
-        url: `http://192.168.168.173/sendPdfs/${fileName}`,
+        url: `http://192.168.168.173:8090/sendPdfs/${fileName}`,
         responseType: 'arraybuffer',
         responseEncoding: 'binary'
 
@@ -188,6 +188,7 @@ const MergePdfOrder = async(tempDir, tenary) => {
 
     }
             if( x+1 == files.length){
+              console.log('done merging')
               await merger.save(tempDir+'//'+'merged.pdf'); 
               sendToPrintQue(tempDir)
                   // print(`cd C:\\Users\\${username}\\AppData\\Local\\SumatraPDF && SumatraPDF.exe -print-dialog -print-to "${defaultPrinter.printer}" `+`"${tempDir}//merged.pdf" `); 
