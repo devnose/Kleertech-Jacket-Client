@@ -25,11 +25,17 @@ import useWindowSize from "./Utilities/useWindowSize";
 import NewViewer from "./components/NewViewer";
 import DocxViewer from "./components/DocxViewer";
 import ChatMessage from "./components/Messenger/Messenger";
+
+
+const development = true; 
+
+const production = development ? "http://localhost:8090/" : "http://192.168.168.173:8090/"
+
    
 const axios = require("axios").default;
 const { ipcRenderer } = window.require("electron");
 const remoteFileProvider = new RemoteFileSystemProvider({
-  endpointUrl: "http://192.168.168.173:8090/start",
+  endpointUrl: production+"start",
 });
 
 //global variables
@@ -49,7 +55,7 @@ ipcRenderer.send(channels.UPLOAD_FILE, "hey");
 
 //Get docx data from backend
 function readDocsFromExpress(str) {
-  const promise = axios.get(`http://192.168.168.173:8090/docx/${str}`);
+  const promise = axios.get(production+`docx/${str}`);
   const dataPromise = promise.then((response) => response.data);
   return dataPromise;
 }
@@ -140,8 +146,8 @@ class App extends React.Component {
       var str = file.replace(/"/g, "");
       this.setState(
         {
-          setGetPdf: `http://192.168.168.173:8090/pdf/${str}`,
-          getPdf: `http://192.168.168.173:8090/pdf/${str}`,
+          setGetPdf: production+ `pdf/${str}`,
+          getPdf: production+`pdf/${str}`,
         },
         () => {
           console.log(str);
@@ -167,10 +173,10 @@ class App extends React.Component {
   setAttachmentFile = (file) => {
     if (file.indexOf('"') >= 0) {
       var str = file.replace(/"/g, "");
-      // this.setState({ setGetAttatchment: `http://192.168.168.173:8090/attachment/${str}`, getAttatchment: `http://192.168.168.173:8090/attachment/${str}`}, () => {
+      // this.setState({ setGetAttatchment: production+`attachment/${str}`, getAttatchment: production+ `attachment/${str}`}, () => {
       this.setState({
-        setGetMsg: `http://192.168.168.173:8090/msg/${str}`,
-        getMsg: `http://192.168.168.173:8090/msg/${str}`,
+        setGetMsg: production+ `msg/${str}`,
+        getMsg: production+`msg/${str}`,
       });
       this.fileManager.refresh(3000);
       this.setState({ setShowMsg: true, showMsg: true });
@@ -184,7 +190,7 @@ class App extends React.Component {
     this.fileManager.refresh();
 
     //send path to backend
-    axios.post("http://192.168.168.173:8090/dir", e["file"]).then((res) => {
+    axios.post(production+"dir", e["file"]).then((res) => {
       console.log(res);
     });
 
@@ -214,7 +220,7 @@ class App extends React.Component {
       action: "Opened file" + filename,
     };
 
-    axios.post("http://192.168.168.173:8090/logData", data).then((res) => {
+    axios.post(production+"logData", data).then((res) => {
       console.log(res);
     });
     //send filename to backend for printing
@@ -237,7 +243,7 @@ class App extends React.Component {
         
     this.fileManager.refresh(); 
 
-    // axios.post("http://192.168.168.173:8090/upload", file, {
+    // axios.post(production+"upload", file, {
     //   headers: { 
 
     //     'Content-Length': stat.size, 
@@ -282,7 +288,7 @@ class App extends React.Component {
     const dir = 'P://'+e.parentDirectory.path; 
     const data = {name: name, directory: dir}
     
-    axios.post("http://192.168.168.173:8090/create", data).then((res) => {
+    axios.post(production+"create", data).then((res) => {
       console.log(res);
 
       if(res.status == 200){
@@ -318,7 +324,7 @@ class App extends React.Component {
   //             "Order Confirmation Sent for job# " +
   //             path["currentSelectedItemKeys"],
   //         };
-  //         axios.post("http://192.168.168.173:8090/confirm", data).then((res) => {
+  //         axios.post(production+"confirm", data).then((res) => {
   //           if (res.data) {
   //             alert("Order Has been confirmed by someone else");
   //           } else {
@@ -333,7 +339,7 @@ class App extends React.Component {
   //             "Order Confirmation Sent for job# " +
   //             path["selectedItems"][0]["pathKeys"][2],
   //         };
-  //         axios.post("http://192.168.168.173:8090/confirm", data).then((res) => {
+  //         axios.post(production+"confirm", data).then((res) => {
   //           if (res.data) {
   //             alert("Order Has been confirmed by someone else");
   //           } else {
@@ -347,7 +353,7 @@ class App extends React.Component {
   //         }, 2000);
   //       }
 
-  //       //axios.post('http://192.168.168.173:8090/confirm', data).then(res => { console.log(res) })
+  //       //axios.post(production+'confirm', data).then(res => { console.log(res) })
   //     } else {
   //       alert("Cannot Send Confirmation from this directory");
   //     }
@@ -375,7 +381,7 @@ divShowHide = (e) => {
 
 
    id = async () => {
-    const res =  await axios.get('http://192.168.168.173:8090/api/user/'+username); 
+    const res =  await axios.get(production+'api/user/'+username); 
     console.log('restest: '+res.data[0].tokenId);
     return Promise.resolve(res.data[0].tokenId)
   
@@ -576,7 +582,7 @@ divShowHide = (e) => {
           tenary,
       };
 
-      axios.post("http://192.168.168.173:8090/confirm", data).then((res) => {
+      axios.post(production+"confirm", data).then((res) => {
         if (res.data) {
           alert("Order Has been confirmed by someone else");
         } else {
@@ -620,7 +626,7 @@ divShowHide = (e) => {
       (async () => {
         const _id = await this.id(); 
         const data = {tokenId: _id, payload: `Job Jacket ${tenary} printing`}
-        axios.post("http://192.168.168.173:8090/notify", data).then((res) => {
+        axios.post(production+"notify", data).then((res) => {
           console.log(res.data); 
         })
 
@@ -644,7 +650,7 @@ divShowHide = (e) => {
   //       );
   //       console.log(args);
   //       const data = { dir: args, directory: tenary, username: username, };
-  //       axios.post("http://192.168.168.173:8090/readPrintDir", data).then((res) => {
+  //       axios.post(production+"readPrintDir", data).then((res) => {
   //         console.log(res.data);
 
   //         if (res.data.success) {
@@ -654,7 +660,7 @@ divShowHide = (e) => {
   //             username: username,
   //             action: "Printed Job Jacket: #20222152 ",
   //           };
-  //           axios.post("http://192.168.168.173:8090/logData", data).then((res) => {
+  //           axios.post(production+"logData", data).then((res) => {
   //             console.log(res);
   //           });
   //         }

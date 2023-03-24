@@ -15,6 +15,11 @@ const {setPrinter} = require('./PrintPdf')
 const printer = require('./PrintPdf')
 
 
+const development = false; 
+
+const production = development ? production+"" : "http://192.168.168.173:8090/"
+
+
 const username = os.userInfo().username.toString();
 // const username = 'Townsend'
 
@@ -33,7 +38,7 @@ const electrolytic = Electrolytic({
 }); 
 
 const id = async () => {
-  const res =  await axios.get('http://localhost:8090/api/user/'+username); 
+  const res =  await axios.get(production+'api/user/'+username); 
   console.log('restest: '+res.data[0]._id);
   return Promise.resolve(res.data[0]._id)
 
@@ -46,9 +51,9 @@ electrolytic.on('token', token => {
   
   
     console.log(token); 
-    axios.post('http://localhost:8090/token', {token: token}).then(res => {console.log(res.data)}).catch(function (error) {console.log(error)}); 
+    axios.post(production+'token', {token: token}).then(res => {console.log(res.data)}).catch(function (error) {console.log(error)}); 
     (async () => {
-          axios.post('http://localhost:8090/api/user/token',{userId: username, tokenId: token, _id: await id()}).then(res => {console.log(res.data)}).catch(function (error) {console.log(error)}); 
+          axios.post(production+'api/user/token',{userId: username, tokenId: token, _id: await id()}).then(res => {console.log(res.data)}).catch(function (error) {console.log(error)}); 
 
     })()
 })
