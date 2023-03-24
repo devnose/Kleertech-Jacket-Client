@@ -27,7 +27,7 @@ import DocxViewer from "./components/DocxViewer";
 import ChatMessage from "./components/Messenger/Messenger";
 
 
-const development = true; 
+const development = false; 
 
 const production = development ? "http://localhost:8090/" : "http://192.168.168.173:8090/"
 
