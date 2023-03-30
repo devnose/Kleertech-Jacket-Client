@@ -4,7 +4,7 @@ const Electrolytic = require('electrolytic');
 const fs = require('fs');
 const path = require("path");
 const os = require('os');
-const { channels } = require("../src/shared/constants");
+const { channels } = require("../src/shared/constants.js");
 const { exec } = require('child_process');
 const isDev = require("electron-is-dev");
 const { Notification } = require("electron/main");
@@ -17,7 +17,7 @@ const printer = require('./PrintPdf')
 
 const development = false; 
 
-const production = development ? production+"" : "http://192.168.168.173:8090/"
+const production = development ? "http://localhost:8090/": "http://192.168.168.173:8090/"
 
 
 const username = os.userInfo().username.toString();
