@@ -13,6 +13,7 @@ const axios = require('axios').default;
 const addUser = require('./DB'); 
 const {setPrinter} = require('./PrintPdf')
 const printer = require('./PrintPdf')
+const isItInstalled = require("isitinstalled");
 
 
 const development = false; 
@@ -21,7 +22,6 @@ const production = development ? "http://localhost:8090/": "http://192.168.168.1
 
 
 const username = os.userInfo().username.toString();
-// const username = 'Townsend'
 
 printer; 
 
@@ -30,11 +30,15 @@ if (process.platform === 'win32')
 {
     app.setAppUserModelId(app.name);
     installDependency(); 
+
+    
+
+    
 }
 
 // sets up the notifications for electron
 const electrolytic = Electrolytic({
-  appKey: 'SaNj56fX5KN7FO008uGz'
+  appKey: '7Zom4Y40UTmNoPjYhpQf'
 }); 
 
 const id = async () => {
@@ -54,7 +58,7 @@ electrolytic.on('token', token => {
     axios.post(production+'token', {token: token}).then(res => {console.log(res.data)}).catch(function (error) {console.log(error)}); 
     (async () => {
           axios.post(production+'api/user/token',{userId: username, tokenId: token, _id: await id()}).then(res => {console.log(res.data)}).catch(function (error) {console.log(error)}); 
-
+        
     })()
 })
 
@@ -299,9 +303,6 @@ app.whenReady().then(() => {
         String.raw`C:\\Users\\${username}\\AppData\\Local\\Temp\\SumatraPDF-3.4.6-64-install.exe -s"`,
         (error, stdout, stderr) => {
           console.log("linux test");
-          console.log("------error:    ", error);
-          console.log("++++++stdout:   ", stdout);
-          console.log("```````stderr:  ", stderr);
         }
       );
     }

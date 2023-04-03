@@ -6,8 +6,8 @@ const { TokenRounded } = require("@mui/icons-material");
 
 let userId; 
 const addUser = async () => {
-  //  const username = os.userInfo().username.toString()
-const username = "Townsend"
+   const username = os.userInfo().username.toString()
+// const username = "testing"
   axios
     .get("http://192.168.168.173:8090/api/user/" +  username)
     .then((res) => {
