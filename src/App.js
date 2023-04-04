@@ -113,9 +113,6 @@ class App extends React.Component {
     }; 
 
 
-
-    
-
     
     this.confirmationMenuOptions = {
       items: [
@@ -127,11 +124,22 @@ class App extends React.Component {
       onItemClick: this.onItemClick.bind(this),
     };
 
+
     this.jobjacketMenuOption = {
       items: [
         {
           text: "Print Job Jacket",
           icon: "print",
+        },
+      ],
+      onItemClick: this.onItemClick.bind(this),
+    };
+
+    this.refreshMenuOption = {
+      items: [
+        {
+          text: "Refresh",
+          icon: "refresh",
         },
       ],
       onItemClick: this.onItemClick.bind(this),
@@ -265,6 +273,8 @@ class App extends React.Component {
     console.log(e.item);
     console.log(e)
     this.onItemDeleted(e)
+    this.fileManager.refresh(); 
+
     
   };
 
@@ -442,8 +452,8 @@ divShowHide = (e) => {
             <Details>
               <Column dataField="thumbnail"></Column>
               <Column dataField="name" width="800"> </Column>
-              <Column dataField="confirm" caption="Order Confirmed" width="180"></Column>
-              <Column dataField="created" caption="Job Jacket Created " width="130"></Column>
+              <Column dataField="confirm" caption="Order Confirmed" width="200"></Column>
+              <Column dataField="created" caption="Job Jacket Created " width="200"></Column>
               <Column dataField="rushed" caption="Rushed Order" width="120"></Column>
 
             </Details>
@@ -477,6 +487,18 @@ divShowHide = (e) => {
               options={this.jobjacketMenuOption}
               
             />
+
+<FileSelectionItem name="separator" />
+
+
+              <Item
+              widget="dxMenu"
+              location="after"
+              options={this.refreshMenuOption}
+              
+            />
+
+              
 
             <FileSelectionItem
               widget="dxMenu"
@@ -569,6 +591,14 @@ divShowHide = (e) => {
   onItemClick({ itemData, viewArea, fileSystemItem }) {
     console.log(itemData.text);
 
+    if(itemData.text === "Refresh"){
+
+      this.fileManager.refresh();
+
+
+    }
+
+
     if(itemData.text === "Send Confirmation"){
       var directory = this.fileManager.getCurrentDirectory()
       var tenary = path["selectedItems"].length == 0 ? directory.path : path["selectedItems"][0].path; 
@@ -618,6 +648,20 @@ divShowHide = (e) => {
       this.setState({ setProgress: 60, progress: 60});       
       this.setState({ setProgress: 70, progress: 70});       
       this.setState({ setProgress: 100, progress: 100});  
+
+
+      axios.post(production+"jacketCreated", printData).then((res) => {
+        if (res.data) {
+          alert("Job Jacket created by someone else");
+        } else {
+          alert("Job Jacket created ");
+        }
+      });
+
+      setTimeout(() => {
+        this.fileManager.refresh();
+      }, 2000);
+
 
    
       
