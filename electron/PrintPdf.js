@@ -171,22 +171,21 @@ const MergePdfOrder = async (tempDir, tenary) => {
     if (x + 1 == files.length) {
       console.log("done merging");
       await merger.save(tempDir + "//" + "merged.pdf");
-      sendToPrintQue(tempDir);
+      sendToPrintQue(tempDir, tenary);
       // print(`cd C:\\Users\\${username}\\AppData\\Local\\SumatraPDF && SumatraPDF.exe -print-dialog -print-to "${defaultPrinter.printer}" `+`"${tempDir}//merged.pdf" `);
     }
   }
 };
 
 const sendToPrintQue = (tempDir, tenary) => {
-  showPrintNotification(tenary);
   const username = os.userInfo().username;
-  setTimeout(() => {
+ 
     console.log(fs.readdirSync(tempDir));
     print(
       `cd C:\\Users\\${username}\\AppData\\Local\\SumatraPDF && SumatraPDF.exe -print-dialog -print-to "${defaultPrinter.printer}" ` +
         `"${tempDir}\\merged.pdf" `
     );
-  }, 5000);
+    showPrintNotification(tenary);
 
   //   var files = fs.readdirSync(tempDir)
   //   console.log(files);
@@ -254,11 +253,8 @@ const setPrinter = (userPrinter) => {
 };
 
 const showPrintNotification = async (tenary) => {
-  axios
-    .post(production + "notify", { payload: `Printing ${tenary}` })
-    .then((res) => {
-      console.log(res.data);
-    });
+  new Notification({ title:"Kleertech", body: 'Prining '+tenary}).show()
+
 };
 
 module.exports = { setPrinter };

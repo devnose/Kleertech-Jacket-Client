@@ -3,6 +3,8 @@ const axios = require('axios').default;
 const { channels } = require("../src/shared/constants");
 const os = require('os');
 const { TokenRounded } = require("@mui/icons-material");
+const { Notification } = require("electron/main");
+
 
 let userId; 
 const addUser = async () => {
@@ -85,6 +87,31 @@ async function haveConversation(data) {
 }
 
 
+async function findNotification(){
+  try {
+    const res = await axios.post(
+      "http://192.168.168.173:8090/startwatch"
+    ); 
+
+    if(res.status == 200){
+
+      showNotification(res.data)
+    }
+
+    
+  } catch (err) {
+    
+  }
+}
+
+setInterval(() => {
+
+  findNotification()
+
+  
+}, 10000);
+
+
     setTimeout(() => {
         console.log(userId)
         ipcMain.on(channels.SEND_USERID, (event, arg) => {
@@ -92,6 +119,17 @@ async function haveConversation(data) {
           });
           
     }, 5000);
+
+
+
+
+
+
+
+
+function showNotification (payload) {
+  new Notification({ title:payload.title, body: payload.body}).show()
+}
 
 
 

@@ -7,13 +7,15 @@ const os = require('os');
 const { channels } = require("../src/shared/constants.js");
 const { exec } = require('child_process');
 const isDev = require("electron-is-dev");
-const { Notification } = require("electron/main");
 const { autoUpdater } = require('electron-updater');
 const axios = require('axios').default;
 const addUser = require('./DB'); 
 const {setPrinter} = require('./PrintPdf')
 const printer = require('./PrintPdf')
 const isItInstalled = require("isitinstalled");
+
+
+
 
 
 const development = false; 
@@ -38,7 +40,7 @@ if (process.platform === 'win32')
 
 // sets up the notifications for electron
 const electrolytic = Electrolytic({
-  appKey: '7Zom4Y40UTmNoPjYhpQf'
+  appKey: 'SaNj56fX5KN7FO008uGz'
 }); 
 
 const id = async () => {
@@ -53,11 +55,11 @@ const id = async () => {
 electrolytic.on('token', token => {
 
   
-  
+  console.log('game')
     console.log(token); 
     axios.post(production+'token', {token: token}).then(res => {console.log(res.data)}).catch(function (error) {console.log(error)}); 
     (async () => {
-          axios.post(production+'api/user/token',{userId: username, tokenId: token, _id: await id()}).then(res => {console.log(res.data)}).catch(function (error) {console.log(error)}); 
+          axios.post(production+'api/user/token',{userId: username, tokenId: token, _id: await id()}).then(res => {console.log("yes"+res.data)}).catch(function (error) {console.log("error"+error)}); 
         
     })()
 })
@@ -137,6 +139,7 @@ function createWindow() {
   //updater 
   mainWindow.once('ready-to-show', () => {
     autoUpdater.checkForUpdatesAndNotify(); 
+
   })
   
 }
@@ -337,12 +340,12 @@ ipcMain.on(channels.UPLOAD_FILE, (event, arg) => {
 
 
 
-const NOTIFICATION_TITLE = 'Kleertech'
-const NOTIFICATION_BODY = 'Notification from the Main process'
 
-function showNotification (payload) {
-  new Notification({ title: NOTIFICATION_TITLE, body: payload}).show()
-}
+
+
+
+
+
 
 ipcMain.on('restart_app', () => {
   autoUpdater.quitAndInstall();
@@ -354,6 +357,8 @@ autoUpdater.on('update-available', () => {
 autoUpdater.on('update-downloaded', () => {
   mainWindow.webContents.send('update_downloaded');
 });
+
+
 
 
 

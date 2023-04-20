@@ -62,6 +62,16 @@ function readDocsFromExpress(str) {
 
 
 
+const res =   axios.get(production+'startWatch'); 
+console.log('sending');
+const data = res.then((response) => response.data); 
+console.log(data)
+
+
+
+
+
+
 //class file compoenent
 class App extends React.Component {
   constructor(props) {
